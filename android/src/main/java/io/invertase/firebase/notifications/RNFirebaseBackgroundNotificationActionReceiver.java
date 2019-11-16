@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ComponentName;
 import android.os.Bundle;
-import android.support.v4.app.RemoteInput;
+import android.util.Log;
+
+import androidx.core.app.RemoteInput;
 
 import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.google.firebase.firestore.util.Logger;
 
 import io.invertase.firebase.Utils;
 
@@ -32,12 +35,13 @@ public class RNFirebaseBackgroundNotificationActionReceiver extends BroadcastRec
       WritableMap results = Arguments.makeNativeMap(extrasBundle);
       notificationOpenMap.putMap("results", results);
     }
-
+    Log.d("muie", "muie");
     return notificationOpenMap;
   }
 
   @Override
   public void onReceive(Context context, Intent intent) {
+//    android.os.Debug.waitForDebugger();
     if (!isBackgroundNotficationIntent(intent)) {
       return;
     }

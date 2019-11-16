@@ -12,7 +12,15 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class RNFirebaseMessagingPackage implements ReactPackage {
+
+  private IRNNotifDisplayHandler remoteNotifHandler;
+
   public RNFirebaseMessagingPackage() {
+  }
+
+  public RNFirebaseMessagingPackage(IRNNotifDisplayHandler remoteNotifHandler) {
+    this.remoteNotifHandler = remoteNotifHandler;
+    GlobalHandlersHolder.getInstance().setDisplayHandler(remoteNotifHandler);
   }
 
   /**

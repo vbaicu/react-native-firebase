@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.RemoteInput;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.core.app.RemoteInput;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
@@ -96,6 +96,8 @@ public class RNFirebaseNotifications extends ReactContextBaseJavaModule implemen
   @ReactMethod
   public void getInitialNotification(Promise promise) {
     WritableMap notificationOpenMap = null;
+//    Bundle bundle = getCurrentActivity().getIntent().getExtras();
+//    android.os.Debug.waitForDebugger();
     if (getCurrentActivity() != null) {
       notificationOpenMap = parseIntentForNotification(getCurrentActivity().getIntent());
     }
@@ -393,20 +395,9 @@ public class RNFirebaseNotifications extends ReactContextBaseJavaModule implemen
       iconMap.putString("icon", notification.getIcon());
       androidMap.putMap("smallIcon", iconMap);
     }
-    if (notification.getImageUrl() != null) {
-      String imageUrl = notification.getImageUrl().toString();
-      WritableMap bigPictureMap = Arguments.createMap();
-      bigPictureMap.putString("picture", imageUrl);
-      bigPictureMap.putNull("largeIcon");
-      androidMap.putMap("bigPicture", bigPictureMap);
-      androidMap.putString("largeIcon", imageUrl);
-    }
     if (notification.getTag() != null) {
       androidMap.putString("group", notification.getTag());
       androidMap.putString("tag", notification.getTag());
-    }
-    if (notification.getChannelId() != null) {
-      androidMap.putString("channelId", notification.getChannelId());
     }
     notificationMap.putMap("android", androidMap);
 
@@ -452,6 +443,7 @@ public class RNFirebaseNotifications extends ReactContextBaseJavaModule implemen
         Log.d(TAG, "Received new remote notification");
 
         RemoteMessage message = intent.getParcelableExtra("notification");
+//        android.os.Debug.waitForDebugger();
         WritableMap messageMap = parseRemoteMessage(message);
 
         Utils.sendEvent(
